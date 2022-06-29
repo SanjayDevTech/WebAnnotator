@@ -5,14 +5,14 @@ class Observable {
         this.observe = this.observe.bind(this);
         this.postValue = this.postValue.bind(this);
         this.remove = this.remove.bind(this);
-        this.get = this.get.bind(this);
+        this.getValue = this.getValue.bind(this);
     }
     observe(cb) {
         this.observers.push(cb);
     }
 
     remove(cb) {
-        this.observers = this.observers.filter(v => v === cb);
+        this.observers = this.observers.filter(v => v !== cb);
     }
 
     postValue(value) {
@@ -21,7 +21,7 @@ class Observable {
         this.observers.forEach(cb => cb(value));
     }
 
-    get() {
+    getValue() {
         return this.value;
     }
 }
@@ -31,7 +31,7 @@ const isStart = new Observable(false);
 
 
 function onClickAction() {
-    if (isStart.get()) {
+    if (isStart.getValue()) {
         isStart.postValue(false);
     } else {
         isStart.postValue(true);
