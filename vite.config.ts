@@ -4,8 +4,8 @@ import path from "path";
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/annotation.ts"),
-      name: "WebAnnotation",
+      entry: path.resolve(__dirname, "src/annotator.ts"),
+      name: "WebAnnotator",
     },
   },
 });

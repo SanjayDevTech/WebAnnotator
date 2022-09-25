@@ -1,5 +1,5 @@
 {
-  "name": "web-annotation",
+  "name": "web-annotator",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
@@ -8,8 +8,8 @@
     "preview": "vite preview"
   },
   "files": [
-    "dist/web-annotation.js",
-    "dist/web-annotation.umd.js"
+    "dist/web-annotator.js",
+    "dist/web-annotator.umd.js"
   ],
   "devDependencies": {
     "typescript": "^4.6.4",
