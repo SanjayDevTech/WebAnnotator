@@ -1,6 +1,6 @@
-const parentElements = (element) => {
+const parentElements = (element: Element | Node | null) => {
   const parents = [];
-  while (element) {
+  while (element && element instanceof HTMLElement) {
     const tagName = element.nodeName.toLowerCase();
     const cssId = element.id ? `#${element.id}` : '';
     // let cssClass = '';
@@ -15,13 +15,13 @@ const parentElements = (element) => {
       // selector: tagName + cssId + cssClass,
     });
 
-    element = element.parentNode !== document ? element.parentNode : false;
+    element = element.parentNode !== document ? element.parentNode : null;
   }
 
   return parents;
 };
 
-const nthElement = (element, sameType = true) => {
+const nthElement = (element: Element, sameType = true) => {
   let c = element;
   let nth = 1;
   while (c.previousElementSibling !== null) {
@@ -34,16 +34,17 @@ const nthElement = (element, sameType = true) => {
   return nth;
 };
 
-export { nthElement };
-
-const nthSelectorNeeded = (selector, path) => {
+const nthSelectorNeeded = (selector: string, path: string) => {
   const querySelector = path === '' ? selector : `${path} > ${selector}`;
 
   return document.querySelectorAll(querySelector).length > 1;
 };
 
-const buildPathString = (parents) => {
-  const pathArr = [];
+const buildPathString = (parents: {
+  element: HTMLElement;
+  selector: string; 
+}[]) => {
+  const pathArr: string[] = [];
   const joinSep = "->"
 
   parents.forEach((parent) => {
@@ -56,7 +57,7 @@ const buildPathString = (parents) => {
   return pathArr.join(joinSep);
 };
 
-const domElementPath = (element) => {
+const domElementPath = (element: any) => {
   if (!(element instanceof HTMLElement)) {
     throw new Error('element must be of type `HTMLElement`.');
   }
