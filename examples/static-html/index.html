@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Annotator in Static Sites</title>
+
+    <!-- Load the Web Annotator library -->
+    <!-- Here we are using the unpkg CDN, but you can also use a local copy -->
+    <!-- Unpkg library link: https://unpkg.com/web-annotator/dist/web-annotator.js -->
+    <!-- Or use a versioned link: https://unpkg.com/web-annotator@<version>/dist/web-annotator.js -->
+    <script src="https://unpkg.com/web-annotator@0.0.2/dist/web-annotator.js"></script>
+</head>
+<body>
+    Some random text
+    <h2>Title</h2>
+    <img src="https://picsum.photos/200" alt="Random Image">
+    <main>
+        <div id="content"></div>
+        <button id="inc-button">Increment</button>
+    </main>
+    <script src="./main.js"></script>
+</body>
+</html>

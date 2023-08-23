@@ -16,31 +16,34 @@ import {
   off,
 } from "firebase/database";
 import domElementPath from "./dom-element-path.js";
+import { safeHost } from "./host.js";
 import Observable from "./observable.js";
-(function () {
+
+function annotator() {
   const firebaseConfig = {
-    apiKey: "AIzaSyDeYJ8cscOm3I4kn6Nq2wFWS_WQCctVN9w",
-    authDomain: "web-annotator-123.firebaseapp.com",
-    projectId: "web-annotator-123",
-    storageBucket: "web-annotator-123.appspot.com",
-    messagingSenderId: "313496327840",
-    appId: "1:313496327840:web:652fdde1d4b02f3dc0dbc5",
-    databaseURL: "web-annotator-123-default-rtdb.firebaseio.com",
+    apiKey: "AIzaSyBnne-Ip5UmPeo8LRW3XQUStD4_HT1NRA8",
+    authDomain: "web-annotator-js.firebaseapp.com",
+    databaseURL: "https://web-annotator-js-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "web-annotator-js",
+    storageBucket: "web-annotator-js.appspot.com",
+    messagingSenderId: "737690326268",
+    appId: "1:737690326268:web:39080c94053f463a2cf379",
+    measurementId: "G-J2NLLT96LK"
   };
 
   const baseCss = `
-  .__web_annotation_container {
-    position: fixed;
-    bottom: 5px;
-    left: auto;
-    right: calc(50% - 7.5em);
-    width: 15em;
-    height: min-content;
-    padding: 10px;
-    background-color: green;
-    display: flex;
-    column-gap: 15px;
-    justify-content: center;
+.__web_annotation_container {
+  position: fixed;
+  bottom: 5px;
+  left: auto;
+  right: calc(50% - 7.5em);
+  width: 15em;
+  height: min-content;
+  padding: 10px;
+  background-color: green;
+  display: flex;
+  column-gap: 15px;
+  justify-content: center;
 }
 
 .__web_annotation_comment {
@@ -63,11 +66,16 @@ import Observable from "./observable.js";
 .__web_annotation_target {
     border-style: dashed !important;
     border-color: green;
+    border-width: 2px;
+    border-radius: 3px;
+    box-sizing: border-box;
 }
 
 .__web_annotation_selected {
     border-style: dashed !important;
     border-color: red;
+    border-width: 2px;
+    border-radius: 3px;
 }`;
 
   const app = initializeApp(firebaseConfig);
@@ -136,6 +144,13 @@ import Observable from "./observable.js";
       signIn();
     });
 
+    const clearButtonTag = document.createElement("button");
+    clearButtonTag.classList.add(actionClass);
+    clearButtonTag.append("Clear");
+    clearButtonTag.addEventListener("click", function () {
+      onClearSelected();
+    });
+
     const commentContainerTag = document.createElement("div");
     commentContainerTag.id = commentId;
     commentContainerTag.classList.add(commentClass);
@@ -157,7 +172,7 @@ import Observable from "./observable.js";
         alert("Please login");
         return;
       }
-      const host = window.location.host;
+      const host = safeHost();
       const parentPath = `${host}/${domElementString}`;
       const messageRef = push(child(ref(db), parentPath));
       set(messageRef, {
@@ -192,6 +207,7 @@ import Observable from "./observable.js";
       divTag,
       buttonTag,
       loginButtonTag,
+      clearButtonTag,
       commentContainerTag,
       commentListTag,
       inputTag,
@@ -258,11 +274,13 @@ import Observable from "./observable.js";
     isStart.observe((v) => {
       if (v) {
         buttonTag.innerText = "Stop";
+        divTag.appendChild(clearButtonTag);
         document.body.addEventListener("mouseover", onMouseOver);
 
         document.body.addEventListener("mouseout", onMouseOut);
       } else {
         buttonTag.innerText = "Start";
+        clearButtonTag.remove();
         document.body.removeEventListener("mouseover", onMouseOver);
 
         document.body.removeEventListener("mouseout", onMouseOut);
@@ -270,7 +288,7 @@ import Observable from "./observable.js";
     });
 
     async function getComments() {
-      const host = window.location.host;
+      const host = safeHost();
       domElementRef = ref(db, `${host}/${domElementString}`);
       onValue(domElementRef, (snapshot) => {
         const messagesObject = snapshot.val();
@@ -307,4 +325,7 @@ import Observable from "./observable.js";
   window.onload = function () {
     main();
   };
-})();
+  
+}
+
+export default annotator;

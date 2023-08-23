@@ -1,6 +1,6 @@
 {
   "name": "web-annotator",
-  "version": "0.0.1",
+  "version": "0.0.3-beta.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -8,8 +8,11 @@
     "preview": "vite preview"
   },
   "files": [
-    "dist/web-annotator.js",
-    "dist/web-annotator.umd.js"
+    "dist",
+    "index.ts",
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "devDependencies": {
     "typescript": "^4.6.4",

@@ -1,3 +1,5 @@
+const TAG = "WebAnnotator";
+
 const parentElements = (element: Element | Node | null) => {
   const parents = [];
   while (element && element instanceof HTMLElement) {
@@ -30,12 +32,13 @@ const nthElement = (element: Element, sameType = true) => {
     }
     c = c.previousElementSibling;
   }
-
+  console.debug(TAG, "nthElement", nth, element);
   return nth;
 };
 
 const nthSelectorNeeded = (selector: string, path: string) => {
   const querySelector = path === '' ? selector : `${path} > ${selector}`;
+  console.debug(TAG, "nthSelectorNeeded", querySelector);
 
   return document.querySelectorAll(querySelector).length > 1;
 };
@@ -45,7 +48,8 @@ const buildPathString = (parents: {
   selector: string; 
 }[]) => {
   const pathArr: string[] = [];
-  const joinSep = "->"
+  const joinSep = " > ";
+  const finalJoinSep = "->";
 
   parents.forEach((parent) => {
     if (nthSelectorNeeded(parent.selector, pathArr.join(joinSep))) {
@@ -54,7 +58,9 @@ const buildPathString = (parents: {
     pathArr.push(parent.selector.replace("#", "@"));
   });
 
-  return pathArr.join(joinSep);
+  console.debug(TAG, "buildPathString", pathArr.join(finalJoinSep));
+
+  return pathArr.join(finalJoinSep);
 };
 
 const domElementPath = (element: any) => {
@@ -62,7 +68,9 @@ const domElementPath = (element: any) => {
     throw new Error('element must be of type `HTMLElement`.');
   }
 
-  return buildPathString(parentElements(element));
+  const path = buildPathString(parentElements(element));
+  console.debug(TAG, "domElementPath", path);
+  return path;
 };
 
 export default domElementPath;
